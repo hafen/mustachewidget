@@ -1,0 +1,13 @@
+Package: mustachewidget
+Title: Build and populate a mustache template with data
+Version: 0.0.0.9000
+Authors@R: 
+    person("Ryan", "Hafen", , "rhafen@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package provides a simple utility to build and populate mustache templates with data using htmlwdgets. It is meant to provide a simple way to construct custom html content as an htmlwidget.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.2
+Imports: 
+    htmlwidgets

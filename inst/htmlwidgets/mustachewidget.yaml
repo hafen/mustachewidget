@@ -1,0 +1,5 @@
+dependencies:
+  - name: mustache
+    version: 4.2.0
+    src: htmlwidgets/lib/mustache-4.2.0
+    script: mustache.min.js
