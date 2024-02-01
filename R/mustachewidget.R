@@ -1,31 +1,49 @@
 #' Create a mustache htmlwidget
 #' 
 #' @param template A string that contains a mustache template.
-#' @param data A named list that contains the data that will populate the template.
+#' @param data A named list that contains the data that will populate the
+#'   template.
 #' @param width Width of the htmlwidget.
 #' @param height Height of the htmlwidget.
-#' @param elementId Optional id of the element the htmlwidget will be rendered into.
-#' @param deps Optional list of dependencies required for the htmlwidget.
+#' @param sizingPolicy See \code{\link[htmlwidgets]{sizingPolicy}}.
+#' @param dependencies Optional list of dependencies required for the
+#'   htmlwidget.
+#' @param elementId Optional id of the element the htmlwidget will be rendered
+#'   into.
+#' @param preRenderHook See \code{\link[htmlwidgets]{createWidget}}.
 #' @import htmlwidgets
 #' @examples
 #' mustache("Hi, {{name}}", data = list(name = "Bob"))
 #' @export
-mustache <- function(template, data,
-  width = NULL, height = NULL, elementId = NULL, deps = NULL
+mustache <- function(
+  template,
+  data,
+  width = NULL,
+  height = NULL,
+  sizingPolicy = htmlwidgets::sizingPolicy(),
+  dependencies = NULL,
+  elementId = NULL,
+  preRenderHook = NULL
 ) {
-  x = list(
+  if (file.exists(template)) {
+    template <- paste0(readLines(template, warn = FALSE), collapse = "\n")
+  }
+
+  x <- list(
     template = template,
     data = data
   )
 
   htmlwidgets::createWidget(
-    name = 'mustachewidget',
+    name = "mustachewidget",
     x,
     width = width,
     height = height,
-    package = 'mustachewidget',
+    sizingPolicy = sizingPolicy,
+    package = "mustachewidget",
+    dependencies = dependencies,
     elementId = elementId,
-    dependencies = deps
+    preRenderHook = preRenderHook
   )
 }
 
@@ -47,12 +65,14 @@ mustache <- function(template, data,
 #'
 #' @export
 mustachewidgetOutput <- function(outputId, width = "100%", height = "400px") {
-  htmlwidgets::shinyWidgetOutput(outputId, "mustachewidget", width, height, package = "mustachewidget")
+  htmlwidgets::shinyWidgetOutput(outputId, "mustachewidget", width, height,
+    package = "mustachewidget")
 }
 
 #' @rdname mustachewidget-shiny
 #' @export
 renderMustachewidget <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) }
+  if (!quoted)
+    expr <- substitute(expr)
   htmlwidgets::shinyRenderWidget(expr, mustachewidgetOutput, env, quoted = TRUE)
 }
